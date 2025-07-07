@@ -49,11 +49,11 @@ ocr-epub/
 
 | Étape                                 | Statut     |
 |--------------------------------------|------------|
-| Extraction des images depuis PDF     | ✅ Fait     |
-| Pré-traitement et binarisation       | ✅ En cours |
-| Segmentation des régions             | 🔧 À venir |
-| OCR et reconnaissance des caractères | 🔧 À venir |
-| Génération d’un EPUB structuré       | 🔧 À venir |
+| Extraction des images depuis PDF     | Fait     |
+| Pré-traitement et binarisation       | En cours |
+| Segmentation des régions             | À venir |
+| OCR et reconnaissance des caractères | À venir |
+| Génération d’un EPUB structuré       | À venir |
 
 ---
 
