@@ -20,6 +20,9 @@ Ce projet vise à :
 ---
 
 ## 🔧 Structure prévue du projet
+
+```plaintext
+
 ocr-epub/
 ├── data/ # PDF source, images extraites, annotations
 ├── src/ # Code source Python ou C
@@ -29,7 +32,7 @@ ocr-epub/
 ├── README.md # Présent fichier
 ├── LICENCE
 └── requirements.txt # Dépendances Python 
-
+```
 
 ---
 
