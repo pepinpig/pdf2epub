@@ -6,15 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "constante.h"
-#include "manipulation_fichier.h"
-#include "SVD.h"
-#include "selection.h"
-#include "appariement.h"
-#include "trouve_coin.h"
-#include "camera_calibration.h"
-#include "ransac.h"
-
+//#include "filtre.h"
 
 #define EPSILON 0.0001
 

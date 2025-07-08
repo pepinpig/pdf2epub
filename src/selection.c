@@ -1,9 +1,8 @@
 #include "selection.h"
 
-// Calcul de la variance pour une direction donnée
 double variance(matrice* image, int x, int y, int dx, int dy) {
     int count = 0; int sum = 0; int sumSq = 0;
-    for (int i = -Window; i <= Window; ++i) {
+    for (int i = -WINDOW; i <= WINDOW; ++i) {
         int nx = x + i * dx;
         int ny = y + i * dy;
         if (nx >= 0 && nx < image->m && ny >= 0 && ny < image->n) {
@@ -21,7 +20,7 @@ int min4(int un, int deux, int trois, int quatre){
     min= (deux<min) ? deux : min; 
     min= (trois<min) ? trois : min; 
     min= (quatre<min) ? quatre : min; 
-    return min
+    return min;
 }
 
 int selection(matrice* image_input, matrice* image_output) {
@@ -33,7 +32,7 @@ int selection(matrice* image_input, matrice* image_output) {
             int var2 = variance(image_input, x, y, 1, 1);  // Diagonale bas gauche haut droite
             int var3 = variance(image_input, x, y, 1, -1); // Diagonale haut gauche bas droite 
             int score = min4(var0, var1, var2, var3);
-            if (score > Seuil_selection) {
+            if (score > SEUIL_SELECTION) {
                 image_output->mat[y][x] = 1;  // Coin détecté
                 count++;
             } else {

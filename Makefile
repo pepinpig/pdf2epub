@@ -1,59 +1,65 @@
-WFLAGS := -Wall
-CFLAGS := -std=c99
+# Compilateur et options
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c99 -I$(SRC_DIR)
+PYTHON = python3
 
-all : test_triangulation test_selection test_trouve_coin test_detection test_camera_calibration test_reconstruction_mult test_reconstruction test_SVD
+# Répertoires
+SRC_DIR = src
+BUILD_DIR = build
+TEST_DIR = tests
+DATA_DIR = data
 
-test_camera_calibration : constante.o manipulation_fichier.o matrice.o SVD.o camera_calibration.o test_camera_calibration.c
-	gcc $(CFLAGS) $(WFLAGS) -g constante.o manipulation_fichier.o matrice.o SVD.o camera_calibration.o  test_camera_calibration.c -lm -o test_camera_calibration
+# Liste des fichiers source
+SRC_FILES = matrice manipulation_fichier filtre
 
-test_selection : constante.o matrice.o manipulation_fichier.o selection.o test_selection.c selection.h
-	gcc $(CFLAGS) $(WFLAGS) -g constante.o manipulation_fichier.o matrice.o selection.o test_selection.c -lm -o test_selection
+# Génère automatiquement les objets dans $(BUILD_DIR)
+OBJ = $(patsubst %, $(BUILD_DIR)/%.o, $(SRC_FILES))
 
-test_detection : constante.o ransac.o detection.o manipulation_fichier.o matrice.o selection.o appariement.o trouve_coin.o  SVD.o camera_calibration.o test_detection.c
-	gcc $(CFLAGS) $(WFLAGS) -g constante.o ransac.o detection.o manipulation_fichier.o matrice.o selection.o appariement.o trouve_coin.o  SVD.o camera_calibration.o test_detection.c -lm -o test_detection
+# Cible de compilation principale pour test_filtre
+test_filtre: $(OBJ) $(TEST_DIR)/test_filtre.c
+	$(CC) $(CFLAGS) -g $(OBJ) $(TEST_DIR)/test_filtre.c -o $@ -lm
 
-test_triangulation : constante.o triangle.o manipulation_fichier.o matrice.o SVD.o camera_calibration.o reconstruction.o triangle.h test_triangulation.c 
-	gcc $(CFLAGS) $(WFLAGS) -g constante.o triangle.o manipulation_fichier.o matrice.o reconstruction.o SVD.o camera_calibration.o  test_triangulation.c -lm -o test_triangulation
-  
-test_reconstruction_mult : constante.o manipulation_fichier.o matrice.o reconstruction.o SVD.o camera_calibration.o test_reconstruction_mult.c
-	gcc $(CFLAGS) $(WFLAGS) -g constante.o manipulation_fichier.o matrice.o reconstruction.o SVD.o camera_calibration.o  test_reconstruction_mult.c -lm -o test_reconstruction_mult
+# Règle générique pour compiler les .o dans build/
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(SRC_DIR)/%.h
+	mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) -g -c $< -o $@ -lm
 
 
-ransac.o :  ransac.c ransac.h
-	gcc $(CFLAGS) $(WFLAGS) -g -c ransac.c -lm -o ransac.o
+# Extrait les pages du PDF (argument PDF=...)
+extract:
+ifndef PDF
+	$(error Vous devez spécifier un PDF avec PDF=nom_du_fichier.pdf)
+endif
+	$(PYTHON) $(SRC_DIR)/pdf_to_jpg.py $(DATA_DIR)/$(PDF)
 
-reconstruction.o :  reconstruction.c reconstruction.h
-	gcc $(CFLAGS) $(WFLAGS) -g -c reconstruction.c -lm -o reconstruction.o
+# Convertit les images en fichiers texte
+convert:
+	$(PYTHON) $(SRC_DIR)/jpg_to_txt.py
 
-selection.o :  selection.c selection.h
-	gcc $(CFLAGS) $(WFLAGS) -g -c selection.c -lm -o selection.o
+reconstruct:
+ifndef TXT
+	$(error Vous devez spécifier un txt avec TXT=nom_du_fichier.pdf)
+endif
+	$(PYTHON) $(SRC_DIR)/txt_to_jpg.py $(TXT)
 
-triangle.o : triangle.h triangle.c
-	gcc $(CFLAGS) $(WFLAGS) -g -c triangle.c -lm -o triangle.o
+# Exécution du pipeline complet
+pipeline:
+ifndef PDF
+	$(error Vous devez spécifier un PDF avec PDF=nom_du_fichier.pdf)
+endif
+	$(PYTHON) $(SRC_DIR)/pdf_to_jpg.py $(DATA_DIR)/$(PDF)
+	$(PYTHON) $(SRC_DIR)/jpg_to_txt.py
 
-manipulation_fichier.o : manipulation_fichier.h manipulation_fichier.c
-	gcc $(CFLAGS) $(WFLAGS) -g -c manipulation_fichier.c -lm -o manipulation_fichier.o
+# Nettoyage
+clean:
+	rm -rf $(BUILD_DIR)/*.o test_filtre
+	rm -rf $(DATA_DIR)/pages_jpg $(DATA_DIR)/pages_txt
 
-matrice.o : matrice.c matrice.h
-	gcc $(CFLAGS) $(WFLAGS) -g -c matrice.c -lm -o matrice.o
 
-SVD.o : SVD.c SVD.h
-	gcc $(CFLAGS) $(WFLAGS) -g -c SVD.c -lm -o SVD.o
+# Alias pratiques
+.PHONY: matrice.o manipulation_fichier.o filtre.o all clean extract convert pipeline reconstruct
 
-trouve_coin.o : trouve_coin.c trouve_coin.h
-	gcc $(CFLAGS) $(WFLAGS) -g -c trouve_coin.c -lm -o trouve_coin.o
-	
-detection.o : detection.c detection.h
-	gcc $(CFLAGS) $(WFLAGS) -g -c detection.c -lm -o detection.o
-
-constante.o : constante.c constante.h
-	gcc $(CFLAGS) $(WFLAGS) -g -c constante.c -lm -o constante.o
-
-clean :
-	rm -f *.o
-	rm -f *.txt
-	rm -f test_detection
-	rm -f test_selection
-	rm -f test_camera_calibration
-	rm -f test_reconstruction_mult
-	rm -f test_triangulation
+matrice.o: $(BUILD_DIR)/matrice.o
+manipulation_fichier.o: $(BUILD_DIR)/manipulation_fichier.o
+filtre.o: $(BUILD_DIR)/filtre.o
+all: test_filtre
