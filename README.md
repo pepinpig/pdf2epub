@@ -51,9 +51,10 @@ ocr-epub/
 |--------------------------------------|------------|
 | Extraction des images depuis PDF     | Fait     |
 | Pré-traitement et binarisation       | En cours |
-| Segmentation des régions             | À venir |
-| OCR et reconnaissance des caractères | À venir |
-| Génération d’un EPUB structuré       | À venir |
+| Segmentation des régions             | En cours |
+| OCR et reconnaissance des caractères | En cours |
+| Strucutration epub | A venir |
+| Génération d’un EPUB       | Fait |
 
 ### 07/07
 - recyclage de fichier issu d'un projet precedent (matrice, manipulation_fichier)
@@ -62,6 +63,12 @@ ocr-epub/
 ### 08/07
 - détail de la structure
 - implementation structure livre et conversion en epub
+
+### 09/07
+- segmentation
+- ajout de filtres pour la segmentation
+- recherhce de fitltre adapté à la segmentation par blocs et par lettre
+- version beta reconnaissance et corrrection
 
 
 ---
