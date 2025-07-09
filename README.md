@@ -55,6 +55,15 @@ ocr-epub/
 | OCR et reconnaissance des caractères | À venir |
 | Génération d’un EPUB structuré       | À venir |
 
+### 07/07
+- recyclage de fichier issu d'un projet precedent (matrice, manipulation_fichier)
+- implementation filtre
+
+### 08/07
+- détail de la structure
+- implementation structure livre et conversion en epub
+
+
 ---
 
 ## Contribuer

@@ -1,6 +1,6 @@
 # Compilateur et options
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -I$(SRC_DIR)
+CFLAGS = -Wall -Wextra -I$(SRC_DIR)
 PYTHON = python3
 
 # Répertoires
@@ -9,15 +9,23 @@ BUILD_DIR = build
 TEST_DIR = tests
 DATA_DIR = data
 
-# Liste des fichiers source
-SRC_FILES = matrice manipulation_fichier filtre
+SRC_FILES1 = matrice manipulation_fichier filtre
+OBJ1 = $(patsubst %, $(BUILD_DIR)/%.o, $(SRC_FILES1))
+test_filtre: $(OBJ1) $(TEST_DIR)/test_filtre.c
+	$(CC) $(CFLAGS) -g $(OBJ1) $(TEST_DIR)/test_filtre.c -o $@ -lm
 
-# Génère automatiquement les objets dans $(BUILD_DIR)
-OBJ = $(patsubst %, $(BUILD_DIR)/%.o, $(SRC_FILES))
+SRC_FILES2 = matrice manipulation_fichier epub
+OBJ2 = $(patsubst %, $(BUILD_DIR)/%.o, $(SRC_FILES2))
+test_epub: $(OBJ2) $(TEST_DIR)/test_epub.c
+	$(CC) $(CFLAGS) -g $(OBJ2) $(TEST_DIR)/test_epub.c -o $@ -lm
 
-# Cible de compilation principale pour test_filtre
-test_filtre: $(OBJ) $(TEST_DIR)/test_filtre.c
-	$(CC) $(CFLAGS) -g $(OBJ) $(TEST_DIR)/test_filtre.c -o $@ -lm
+SRC_FILES3 = matrice manipulation_fichier segmentation
+OBJ3 = $(patsubst %, $(BUILD_DIR)/%.o, $(SRC_FILES3))
+test_segmentation_bloc: $(OBJ3) $(TEST_DIR)/test_segmentation_bloc.c
+	$(CC) $(CFLAGS) -g $(OBJ3) $(TEST_DIR)/test_segmentation_bloc.c -o $@ -lm
+
+
+
 
 # Règle générique pour compiler les .o dans build/
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(SRC_DIR)/%.h
@@ -62,4 +70,7 @@ clean:
 matrice.o: $(BUILD_DIR)/matrice.o
 manipulation_fichier.o: $(BUILD_DIR)/manipulation_fichier.o
 filtre.o: $(BUILD_DIR)/filtre.o
-all: test_filtre
+reconnaissance.o: $(BUILD_DIR)/reconnaissance.o
+segmentation.o: $(BUILD_DIR)/segmentation.o
+epub.o: $(BUILD_DIR)/epub.o
+all: test_filtre test_epub

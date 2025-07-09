@@ -5,27 +5,29 @@
 #include "matrice.h"
 
 
-// Exemple de filtre
-matrice* creer_filtre() {
-    matrice* k=matrice_nulle(3,3);
-    k->mat[0][0]=0; k->mat[0][1]=-1; k->mat[0][2]=0;
-    k->mat[1][0]=-1; k->mat[1][1]=5; k->mat[1][2]=-1;
-    k->mat[2][0]=0; k->mat[2][1]=-1; k->mat[2][2]=0;
+matrice* filtre_flou15() {
+    matrice* k = matrice_nulle(15,15);
+    for (int i = 0; i < 15; i++){
+       for(int j=0; j<15; j++){
+            k->mat[i][j]=1;
+       }
+    }
+    
     return k;
 }
 
 int main() {
     // Créer un filtre 3x3
-    matrice* filtre = filtre_gaussien();
+    matrice* filtre = filtre_flou15();
     matrice* img;
-    read_matrice_from_file_dimension(&img, "page_000.txt"); 
+    read_matrice_from_file_dimension(&img, "page_000_dil3v1.txt"); 
     matrice* sortie = filtering(img, filtre);
     printf("\nImage filtrée :\n");
-    save_matrice_to_file_dimension(sortie, "page_000_moyenne.txt");
+    save_matrice_to_file_dimension(sortie, "page_000_dil3v1f.txt");
     // Libération mémoire (à écrire ou utiliser si déjà implémenté)
     free_matrice(img);
     free_matrice(filtre);
     free_matrice(sortie);
-
+    system("python3 src/txt_to_jpg.py page_000_dil3v1f.txt");
     return 0;
 }

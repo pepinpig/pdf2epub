@@ -1,12 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include "epub.h"
 
-#define OUTPUT_DIR "epub_out"
-#define META_INF_DIR OUTPUT_DIR "/META-INF"
-#define OEBPS_DIR OUTPUT_DIR "/OEBPS"
+#include "epub.h"
 
 // --- Structures déjà définies comme dans ta question ---
 
@@ -138,7 +131,7 @@ void zipper_epub(const char *nom_fichier) {
     }
 }
 
-void generer_epub(Livre *livre, const char *nom_fichier_epub) {
+void generer_epub(Livre *livre) {
     creer_dossiers();
     generer_mimetype();
     generer_container_xml();
@@ -150,5 +143,5 @@ void generer_epub(Livre *livre, const char *nom_fichier_epub) {
     generer_content_opf(livre);
     generer_toc_ncx(livre);
 
-    zipper_epub(nom_fichier_epub);
+    printf("✅ EPUB généré dans le dossier `%s`\n", OUTPUT_DIR);
 }

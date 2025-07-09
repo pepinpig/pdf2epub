@@ -40,6 +40,6 @@ Livre creer_livre_de_test() {
 }
 int main() {
     Livre livre = creer_livre_de_test();
-    generer_epub(&livre, "test.epub");
+    generer_epub(&livre);
     return 0;
 }

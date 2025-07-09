@@ -11,6 +11,14 @@ matrice* filtre_gaussien();
 
 // Filtre passe-haut (renforcement des contours)
 matrice* filtre_contours(); 
-
+matrice* filtre_flou(); 
+matrice* filtre_h();
+matrice* filtre_v();
+matrice* filtre_v25();
 // renvoie une copie de mat en ayant appliqué le filtre de kernel k
 matrice* filtering(const matrice* mat, matrice* k);
+int apply_erosion(const matrice* img, int x, int y, matrice* k);
+matrice* filtering_erosion(const matrice* mat, matrice* k);
+
+int apply_dilatation(const matrice* img, int x, int y, matrice* k);
+matrice* filtering_dilatation(const matrice* mat, matrice* k);

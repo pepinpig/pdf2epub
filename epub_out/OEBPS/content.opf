@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="BookId">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+<dc:title>Exemple de Livre</dc:title>
+<dc:creator>Jean Testeur</dc:creator>
+<dc:language>fr</dc:language>
+<dc:identifier id="BookId">urn:uuid:12345</dc:identifier>
+</metadata>
+<manifest>
+<item id="chap1" href="chapitre1.xhtml" media-type="application/xhtml+xml"/>
+<item id="chap2" href="chapitre2.xhtml" media-type="application/xhtml+xml"/>
+<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+</manifest>
+<spine toc="ncx">
+<itemref idref="chap1"/>
+<itemref idref="chap2"/>
+</spine>
+</package>
