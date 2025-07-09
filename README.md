@@ -19,7 +19,7 @@ Ce projet vise à :
 
 ---
 
-## 🔧 Structure prévue du projet
+## Structure prévue du projet
 
 ```plaintext
 
@@ -36,12 +36,17 @@ ocr-epub/
 
 ---
 
-## Technologies envisagées
+## Mise en oeuvre
 
-- Python / C pour le traitement d’image
-- Clustering (K-means / HAC) pour la segmentation par régions
-- OCR maison (à affiner)
-- Export final au format **EPUB** (à affiner)
+Sauf mention contraire, le projet est codé en C
+- Python pour conversion jpg <-> txt 
+- Module de gestion matricielle et de manipulaiton de fichier
+- Filtrage d'image
+- Clustering (Blobs + k moyenne) pour la segmentation par régions puis par caractère
+- Reconnaissance caractère (k plus proche voisins)
+- ocr par bloc et strucuturation
+- correction du texte
+- Export final au format epub
 
 ---
 
